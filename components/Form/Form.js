@@ -1,12 +1,11 @@
 import { Button, StyleSheet, Text, View, TextInput } from "react-native";
-import { globalStyles } from "../../styles/style";
 import { Formik } from "formik";
 
 export default function Form({ handleAddArticle }) {
   return (
     <View>
       <Formik
-        initialValues={{ name: "", anons: "", fullText: "", img: "" }}
+        initialValues={{ name: "", email: "", password: "", img: "" }}
         onSubmit={(values, action) => {
           handleAddArticle(values);
           action.resetForm();

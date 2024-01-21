@@ -1,7 +1,6 @@
-import MainStack from "./navigate";
 import { useFonts } from "expo-font";
-import AppLoading from "expo-app-loading";
 import { StyleSheet } from "react-native";
+import RegistrationScreen from "./screens/RegistrationScreen";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -14,7 +13,11 @@ export default function App() {
     return null;
   }
 
-  return <MainStack />;
+  return (
+    <>
+      <RegistrationScreen />
+    </>
+  );
 }
 
 const styles = StyleSheet.create({});
