@@ -2,7 +2,6 @@ import { Formik } from "formik";
 import { PlusCircle } from "lucide-react-native";
 import React, { useState } from "react";
 import {
-  Button,
   Image,
   ImageBackground,
   KeyboardAvoidingView,
@@ -11,7 +10,6 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
   Keyboard,
@@ -100,12 +98,6 @@ const RegistrationScreen = ({ navigation }) => {
                   >
                     {isPasswordVisible ? "Сховати" : "Показати"}
                   </Text>
-
-                  {/* <Pressable onPress={handleShowPassword}>
-                    <Text style={styles.passwordShow}>
-                      {isPasswordVisible ? "Сховати" : "Показати"}
-                    </Text>
-                  </Pressable> */}
                   <Pressable style={styles.button} onPress={props.handleSubmit}>
                     <Text style={styles.textButton}>Зареєструватися</Text>
                   </Pressable>
