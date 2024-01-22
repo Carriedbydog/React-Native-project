@@ -1,26 +1,37 @@
-import { useFonts } from "expo-font";
-import { StyleSheet } from "react-native";
+import "react-native-gesture-handler";
+import { StatusBar, StyleSheet } from "react-native";
 import RegistrationScreen from "./screens/RegistrationScreen";
-import { StatusBar } from "expo-status-bar";
 import LoginScreen from "./screens/LoginScreen";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
 export default function App() {
-  const [fontsLoaded] = useFonts({
-    "Poppins-Regular": require("./assets/fonts/Poppins-Regular.ttf"),
-    "Poppins-Bold": require("./assets/fonts/Poppins-Bold.ttf"),
-    "Poppins-Italic": require("./assets/fonts/Poppins-Italic.ttf"),
-  });
-
-  if (!fontsLoaded) {
-    return null;
-  }
+  const MainStack = createStackNavigator();
 
   return (
-    <>
-      {/* <RegistrationScreen /> */}
-      <LoginScreen />
+    <NavigationContainer>
+      <MainStack.Navigator initialRouteName="LoginScreen">
+        <MainStack.Screen
+          name="RegistrationScreen"
+          component={RegistrationScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <MainStack.Screen
+          name="LoginScreen"
+          component={LoginScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        {/* <MainStack.Screen name="PostScreen" component={PostScreen} options={{
+            headerShown: false,
+          }} /> */}
+        {/* <LoginScreen /> */}
+      </MainStack.Navigator>
       <StatusBar style="auto" />
-    </>
+    </NavigationContainer>
   );
 }
 

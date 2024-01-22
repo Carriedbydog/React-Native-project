@@ -1,3 +1,4 @@
+import * as ImagePicker from "expo-image-picker";
 import { Formik } from "formik";
 import { PlusCircle } from "lucide-react-native";
 import React, { useState } from "react";
@@ -18,6 +19,7 @@ import {
 const RegistrationScreen = ({ navigation }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isFocused, setIsFocused] = useState({});
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const handleFocus = (field) => {
     setIsFocused({ ...isFocused, [field]: true });
@@ -41,74 +43,105 @@ const RegistrationScreen = ({ navigation }) => {
           style={styles.image}
         >
           <View style={styles.form}>
-            <View style={styles.imageWrapper}>
-              <Image />
-              <PlusCircle color={"#FF6C00"} style={styles.icon} size={30} />
-            </View>
-
-            <Text style={styles.title}>Реєстрація</Text>
             <Formik
               initialValues={{ name: "", email: "", password: "", image: "" }}
               onSubmit={(values, action) => {
-                handleFormSubmit(values);
-                action.resetForm();
+                // handleFormSubmit(values);
+                // action.resetForm();
+                console.log(values);
               }}
             >
-              {(props) => (
-                <View>
-                  <TextInput
-                    style={[
-                      styles.input,
-                      isFocused.name ? styles.focused : null,
-                    ]}
-                    value={props.values.name}
-                    placeholder="Логін"
-                    onChangeText={props.handleChange("name")}
-                    onFocus={() => handleFocus("name")}
-                    onBlur={() => handleBlur("name")}
-                  />
-                  <TextInput
-                    style={[
-                      styles.input,
-                      isFocused.email ? styles.focused : null,
-                    ]}
-                    value={props.values.email}
-                    placeholder="Адреса електронної пошти"
-                    onChangeText={props.handleChange("email")}
-                    onFocus={() => handleFocus("email")}
-                    onBlur={() => handleBlur("email")}
-                  />
-                  <TextInput
-                    style={[
-                      styles.input,
-                      styles.passwordWrapper,
-                      isFocused.password ? styles.focused : null,
-                    ]}
-                    value={props.values.password}
-                    placeholder="Пароль"
-                    onChangeText={props.handleChange("password")}
-                    secureTextEntry={!isPasswordVisible}
-                    onFocus={() => handleFocus("password")}
-                    onBlur={() => handleBlur("password")}
-                  />
+              {(props) => {
+                const handleSelectImage = async (props) => {
+                  let result = await ImagePicker.launchImageLibraryAsync({
+                    mediaTypes: ImagePicker.MediaTypeOptions.All,
+                    allowsEditing: true,
+                    aspect: [4, 3],
+                    quality: 1,
+                  });
 
-                  <Text
-                    style={styles.passwordShow}
-                    onPress={handleShowPassword}
-                  >
-                    {isPasswordVisible ? "Сховати" : "Показати"}
-                  </Text>
-                  <Pressable style={styles.button} onPress={props.handleSubmit}>
-                    <Text style={styles.textButton}>Зареєструватися</Text>
-                  </Pressable>
-                  <Text
-                    style={styles.login}
-                    onPress={() => navigation.navigate("LoginScreen")}
-                  >
-                    Вже є акаунт? Увійти
-                  </Text>
-                </View>
-              )}
+                  console.log(result);
+
+                  if (!result.cancelled) {
+                    setSelectedImage(result.assets[0].uri);
+                    props.setFieldValue("image", result.assets[0].uri);
+                  }
+                };
+                return (
+                  <View>
+                    <View style={styles.imageWrapper}>
+                      <Image
+                        source={{ uri: selectedImage }}
+                        style={{ width: 130, height: 120, borderRadius: 18 }}
+                        onError={(error) => console.log(error)}
+                      />
+                      <Pressable onPress={() => handleSelectImage(props)}>
+                        <PlusCircle
+                          color={"#FF6C00"}
+                          style={styles.icon}
+                          size={30}
+                        />
+                      </Pressable>
+                    </View>
+
+                    <Text style={styles.title}>Реєстрація</Text>
+                    <TextInput
+                      style={[
+                        styles.input,
+                        isFocused.name ? styles.focused : null,
+                      ]}
+                      value={props.values.name}
+                      placeholder="Логін"
+                      onChangeText={props.handleChange("name")}
+                      onFocus={() => handleFocus("name")}
+                      onBlur={() => handleBlur("name")}
+                    />
+                    <TextInput
+                      style={[
+                        styles.input,
+                        isFocused.email ? styles.focused : null,
+                      ]}
+                      value={props.values.email}
+                      placeholder="Адреса електронної пошти"
+                      onChangeText={props.handleChange("email")}
+                      onFocus={() => handleFocus("email")}
+                      onBlur={() => handleBlur("email")}
+                    />
+                    <TextInput
+                      style={[
+                        styles.input,
+                        styles.passwordWrapper,
+                        isFocused.password ? styles.focused : null,
+                      ]}
+                      value={props.values.password}
+                      placeholder="Пароль"
+                      onChangeText={props.handleChange("password")}
+                      secureTextEntry={!isPasswordVisible}
+                      onFocus={() => handleFocus("password")}
+                      onBlur={() => handleBlur("password")}
+                    />
+
+                    <Text
+                      style={styles.passwordShow}
+                      onPress={handleShowPassword}
+                    >
+                      {isPasswordVisible ? "Сховати" : "Показати"}
+                    </Text>
+                    <Pressable
+                      style={styles.button}
+                      onPress={props.handleSubmit}
+                    >
+                      <Text style={styles.textButton}>Зареєструватися</Text>
+                    </Pressable>
+                    <Text
+                      style={styles.login}
+                      onPress={() => navigation.navigate("LoginScreen")}
+                    >
+                      Вже є акаунт? Увійти
+                    </Text>
+                  </View>
+                );
+              }}
             </Formik>
           </View>
         </ImageBackground>
@@ -140,10 +173,9 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 18,
   },
   imageWrapper: {
-    display: "block",
     position: "absolute",
-    top: -70,
-    left: "35%",
+    top: -150,
+    left: "30%",
     width: 130,
     height: 120,
     borderRadius: 18,
@@ -151,7 +183,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: "absolute",
-    bottom: 10,
+    top: -35,
     right: -14,
   },
   title: {
@@ -196,7 +228,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "normal",
     right: 16,
-    top: 137,
+    bottom: 134,
     color: "#1B4371",
     padding: 10,
   },
