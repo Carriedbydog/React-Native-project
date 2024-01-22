@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from "react-native";
 
-export const CreatePostsScreen = () => {
+export const PostsScreen = () => {
   return (
     <View style={styles.container}>
-      <Text>Тут будуть пости</Text>
+      <Text>PostsScreen</Text>
     </View>
   );
 };

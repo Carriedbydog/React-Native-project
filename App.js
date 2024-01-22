@@ -1,17 +1,21 @@
 import "react-native-gesture-handler";
-import { StatusBar, StyleSheet } from "react-native";
+import { Pressable, StatusBar, StyleSheet } from "react-native";
 import RegistrationScreen from "./screens/RegistrationScreen";
 import LoginScreen from "./screens/LoginScreen";
+import Home from "./screens/Home";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { LogOut } from "lucide-react-native";
 
 export default function App() {
   const MainStack = createStackNavigator();
 
   return (
     <NavigationContainer>
-      <MainStack.Navigator initialRouteName="LoginScreen">
-        <MainStack.Screen
+      <MainStack.Navigator
+      // initialRouteName="LoginScreen"
+      >
+        {/* <MainStack.Screen
           name="RegistrationScreen"
           component={RegistrationScreen}
           options={{
@@ -24,15 +28,41 @@ export default function App() {
           options={{
             headerShown: false,
           }}
+        /> */}
+        <MainStack.Screen
+          name="Home"
+          component={Home}
+          options={{
+            title: "Публікації",
+            headerStyle: {
+              backgroundColor: "#fff",
+              borderBottomWidth: 1,
+            },
+            headerRight: () => {
+              return (
+                <Pressable
+                  onPress={() => {
+                    console.log("logout");
+                  }}
+                >
+                  <LogOut
+                    style={styles.iconLogout}
+                    color={"#BDBDBD"}
+                    size={24}
+                  />
+                </Pressable>
+              );
+            },
+          }}
         />
-        {/* <MainStack.Screen name="PostScreen" component={PostScreen} options={{
-            headerShown: false,
-          }} /> */}
-        {/* <LoginScreen /> */}
       </MainStack.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  iconLogout: {
+    marginRight: 15,
+  },
+});
