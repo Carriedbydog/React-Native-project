@@ -27,6 +27,10 @@ const LoginScreen = ({ navigation }) => {
   const handleShowPassword = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
+
+  const handleFormSubmit = (values) => {
+    navigation.navigate("Home");
+  };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView

@@ -6,6 +6,7 @@ import Home from "./screens/Home";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { LogOut } from "lucide-react-native";
+import { CreatePostsScreen } from "./screens/CreatePostsScreen";
 
 export default function App() {
   const MainStack = createStackNavigator();
@@ -15,7 +16,7 @@ export default function App() {
       <MainStack.Navigator
       // initialRouteName="LoginScreen"
       >
-        {/* <MainStack.Screen
+        <MainStack.Screen
           name="RegistrationScreen"
           component={RegistrationScreen}
           options={{
@@ -28,7 +29,7 @@ export default function App() {
           options={{
             headerShown: false,
           }}
-        /> */}
+        />
         <MainStack.Screen
           name="Home"
           component={Home}
@@ -52,6 +53,17 @@ export default function App() {
                   />
                 </Pressable>
               );
+            },
+          }}
+        />
+        <MainStack.Screen
+          name="CreatePostsScreen"
+          component={CreatePostsScreen}
+          options={{
+            title: "Створити публікацію",
+            headerStyle: {
+              backgroundColor: "#fff",
+              borderBottomWidth: 1,
             },
           }}
         />

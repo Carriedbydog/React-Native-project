@@ -3,59 +3,41 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { ProfileScreen } from "./ProfileScreen";
 import { PostsScreen } from "./PostsScreen";
 
-import {
-  FlatList,
-  Pressable,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { LogOut } from "lucide-react-native";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { CreatePostsScreen } from "./CreatePostsScreen";
 
 const Tabs = createBottomTabNavigator();
 
 const Home = ({ navigation }) => {
   return (
-    // <View style={styles.container}>
-    //   <View>
-    //     <FlatList />
-    //   </View>
-    // </View>
-
     <Tabs.Navigator
       initialRouteName="PostsScreen"
-      screenOptions={
-        (({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
 
-            if (route.name === "ProfileScreen") {
-              iconName = focused
-                ? "ios-information-circle"
-                : "ios-information-circle-outline";
-            } else if (route.name === "PostsScreen") {
-              iconName = focused ? "ios-list-box" : "ios-list";
-            }
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
-        }),
-        {
-          tabBarActiveTintColor: "tomato",
-          tabBarInactiveTintColor: "gray",
-          tabBarStyle: [
-            {
-              display: "flex",
-            },
-            null,
-          ],
-        })
-      }
+          if (route.name === "ProfileScreen") {
+            iconName = focused
+              ? "ios-information-circle"
+              : "ios-information-circle-outline";
+          } else if (route.name === "PostsScreen") {
+            iconName = focused ? "ios-list-box" : "ios-list";
+          }
+
+          if (route.name === "CreatePostsScreen") {
+            return null;
+          }
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: "tomato",
+        inactiveTintColor: "gray",
+      }}
     >
       <Tabs.Screen
-        name="ProfileScreen"
-        component={ProfileScreen}
+        name="PostsScreen"
+        component={PostsScreen}
         options={{
           headerShown: false,
         }}
@@ -64,21 +46,19 @@ const Home = ({ navigation }) => {
         name="CreatePostsScreen"
         component={CreatePostsScreen}
         options={{
-          headerShown: false,
           tabBarButton: (props) => (
-            <Pressable
-              style={styles.button}
+            <TouchableOpacity
               {...props}
               onPress={() => navigation.navigate("CreatePostsScreen")}
             >
-              <Text>+</Text>
-            </Pressable>
+              <Text style={styles.textAddButton}>+</Text>
+            </TouchableOpacity>
           ),
         }}
       />
       <Tabs.Screen
-        name="PostsScreen"
-        component={PostsScreen}
+        name="ProfileScreen"
+        component={ProfileScreen}
         options={{
           headerShown: false,
         }}
@@ -86,6 +66,7 @@ const Home = ({ navigation }) => {
     </Tabs.Navigator>
   );
 };
+
 export default Home;
 
 const styles = StyleSheet.create({

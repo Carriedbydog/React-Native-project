@@ -31,6 +31,10 @@ const RegistrationScreen = ({ navigation }) => {
   const handleShowPassword = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
+
+  const handleFormSubmit = (values) => {
+    navigation.navigate("Home");
+  };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
@@ -46,8 +50,8 @@ const RegistrationScreen = ({ navigation }) => {
             <Formik
               initialValues={{ name: "", email: "", password: "", image: "" }}
               onSubmit={(values, action) => {
-                // handleFormSubmit(values);
-                // action.resetForm();
+                handleFormSubmit(values);
+                action.resetForm();
                 console.log(values);
               }}
             >
