@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "255608755262",
+    "firebase_url": "https://react-navite-project-985d8-default-rtdb.firebaseio.com",
+    "project_id": "react-navite-project-985d8",
+    "storage_bucket": "react-navite-project-985d8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255608755262:android:7ef854722e0ec00ec9ed6f",
+        "android_client_info": {
+          "package_name": "com.company.native"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvtHYiNpved6ZL5NAvNzJXryvMLe8Rg20"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
