@@ -8,9 +8,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { LogOut } from "lucide-react-native";
 import { CreatePostsScreen } from "./screens/CreatePostsScreen";
 
-export default function App() {
-  const MainStack = createStackNavigator();
+const MainStack = createStackNavigator();
 
+export default function Navigate() {
   return (
     <NavigationContainer>
       <MainStack.Navigator initialRouteName="LoginScreen">
