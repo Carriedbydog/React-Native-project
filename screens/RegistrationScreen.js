@@ -1,4 +1,5 @@
 import * as ImagePicker from "expo-image-picker";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Formik } from "formik";
 import { PlusCircle } from "lucide-react-native";
 import React, { useState } from "react";
@@ -15,11 +16,15 @@ import {
   View,
   Keyboard,
 } from "react-native";
+import { auth } from "../config/firebase";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/slice";
 
 const RegistrationScreen = ({ navigation }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isFocused, setIsFocused] = useState({});
   const [selectedImage, setSelectedImage] = useState(null);
+  const dispatch = useDispatch();
 
   const handleFocus = (field) => {
     setIsFocused({ ...isFocused, [field]: true });
@@ -32,8 +37,27 @@ const RegistrationScreen = ({ navigation }) => {
     setIsPasswordVisible(!isPasswordVisible);
   };
 
-  const handleFormSubmit = (values) => {
-    navigation.navigate("Home");
+  const handleFormSubmit = async (values) => {
+    const { name, email, password, image } = values;
+    if (email && password && name && image) {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const { user } = userCredential;
+      const simpleUser = {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+        emailVerified: user.emailVerified,
+      };
+      dispatch(setUser(simpleUser));
+      navigation.navigate("Home");
+    } else {
+      alert("Заповніть всі поля");
+    }
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

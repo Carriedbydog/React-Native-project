@@ -18,13 +18,13 @@ const MainStack = createStackNavigator();
 export default function Navigate() {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
-  console.log(user);
+  console.log(user, "user");
 
   onAuthStateChanged(auth, (user) => {
     console.log(user);
     dispatch(setUser(user));
   });
-  if (user && user.id) {
+  if (user) {
     return (
       <NavigationContainer>
         <MainStack.Navigator initialRouteName="Home">
