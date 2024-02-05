@@ -12,6 +12,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { setUser } from "./redux/slice";
 import { auth } from "./config/firebase";
 import { selectUser } from "./redux/selectors";
+import { useEffect } from "react";
+import { authStateChange } from "./redux/operations";
 
 const MainStack = createStackNavigator();
 
@@ -19,9 +21,10 @@ export default function Navigate() {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
-  onAuthStateChanged(auth, (user) => {
-    dispatch(setUser(user));
-  });
+  useEffect(() => {
+    dispatch(authStateChange());
+  }, [dispatch]);
+
   if (user) {
     return (
       <NavigationContainer>

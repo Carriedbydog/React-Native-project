@@ -17,6 +17,7 @@ import {
 } from "react-native";
 import { useDispatch } from "react-redux";
 import { authSignUpUser } from "../redux/operations";
+import { updateUser } from "../redux/slice";
 
 const RegistrationScreen = ({ navigation }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -39,6 +40,7 @@ const RegistrationScreen = ({ navigation }) => {
     const { name, email, password, image } = values;
     if (email && password && name && image) {
       dispatch(authSignUpUser(values)).unwrap();
+      // dispatch(updateUser(values));
       setSelectedImage(null);
       navigation.navigate("Home");
     } else {
