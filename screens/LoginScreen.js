@@ -12,10 +12,14 @@ import {
   View,
   Keyboard,
 } from "react-native";
+import { useDispatch } from "react-redux";
+import { authSignInUser } from "../redux/operations";
 
 const LoginScreen = ({ navigation }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isFocused, setIsFocused] = useState({});
+
+  const dispatch = useDispatch();
 
   const handleFocus = (field) => {
     setIsFocused({ ...isFocused, [field]: true });
@@ -29,7 +33,13 @@ const LoginScreen = ({ navigation }) => {
   };
 
   const handleFormSubmit = (values) => {
-    navigation.navigate("Home");
+    const { email, password } = values;
+    if (email && password) {
+      dispatch(authSignInUser(values)).unwrap();
+      navigation.navigate("Home");
+    } else {
+      alert("Заповніть всі поля");
+    }
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

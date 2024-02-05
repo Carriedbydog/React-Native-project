@@ -8,20 +8,18 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { LogOut } from "lucide-react-native";
 import { CreatePostsScreen } from "./screens/CreatePostsScreen";
 import { useDispatch, useSelector } from "react-redux";
-import { selectUser } from "./redux/selectors";
 import { onAuthStateChanged } from "firebase/auth";
 import { setUser } from "./redux/slice";
 import { auth } from "./config/firebase";
+import { selectUser } from "./redux/selectors";
 
 const MainStack = createStackNavigator();
 
 export default function Navigate() {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
-  console.log(user, "user");
 
   onAuthStateChanged(auth, (user) => {
-    console.log(user);
     dispatch(setUser(user));
   });
   if (user) {

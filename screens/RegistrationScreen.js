@@ -1,5 +1,4 @@
 import * as ImagePicker from "expo-image-picker";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Formik } from "formik";
 import { PlusCircle } from "lucide-react-native";
 import React, { useState } from "react";
@@ -16,9 +15,8 @@ import {
   View,
   Keyboard,
 } from "react-native";
-import { auth } from "../config/firebase";
 import { useDispatch } from "react-redux";
-import { setUser } from "../redux/slice";
+import { authSignUpUser } from "../redux/operations";
 
 const RegistrationScreen = ({ navigation }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -40,20 +38,8 @@ const RegistrationScreen = ({ navigation }) => {
   const handleFormSubmit = async (values) => {
     const { name, email, password, image } = values;
     if (email && password && name && image) {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const { user } = userCredential;
-      const simpleUser = {
-        uid: user.uid,
-        email: user.email,
-        displayName: user.displayName,
-        photoURL: user.photoURL,
-        emailVerified: user.emailVerified,
-      };
-      dispatch(setUser(simpleUser));
+      dispatch(authSignUpUser(values)).unwrap();
+      setSelectedImage(null);
       navigation.navigate("Home");
     } else {
       alert("Заповніть всі поля");
