@@ -4,7 +4,6 @@ import { selectUser } from "../redux/selectors";
 
 export const PostsScreen = () => {
   const users = useSelector(selectUser);
-  console.log(users, "users");
   return (
     <View style={styles.container}>
       <Text>PostsScreenad</Text>

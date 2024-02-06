@@ -13,7 +13,7 @@ import { setUser } from "./redux/slice";
 import { auth } from "./config/firebase";
 import { selectUser } from "./redux/selectors";
 import { useEffect } from "react";
-import { authStateChange } from "./redux/operations";
+import { authSignOutUser, authStateChange } from "./redux/operations";
 
 const MainStack = createStackNavigator();
 
@@ -24,6 +24,10 @@ export default function Navigate() {
   useEffect(() => {
     dispatch(authStateChange());
   }, [dispatch]);
+
+  const handleSignOut = () => {
+    dispatch(authSignOutUser());
+  };
 
   if (user) {
     return (
@@ -40,11 +44,7 @@ export default function Navigate() {
               },
               headerRight: () => {
                 return (
-                  <Pressable
-                    onPress={() => {
-                      console.log("logout");
-                    }}
-                  >
+                  <Pressable onPress={handleSignOut}>
                     <LogOut
                       style={styles.iconLogout}
                       color={"#BDBDBD"}

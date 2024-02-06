@@ -1,7 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
+  signOut,
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../config/firebase";
@@ -38,25 +40,46 @@ export const authSignInUser = createAsyncThunk(
 
 export const authSignOutUser = createAsyncThunk(
   "auth/signOutUser",
-  async (payload, { getState, rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      await signOut(getState().auth.user);
+      await signOut(auth);
     } catch (error) {
       rejectWithValue(error.message);
     }
   }
 );
 
+// export const authStateChange = createAsyncThunk(
+//   "auth/authStateChange",
+//   async (_, { rejectWithValue, dispatch }) => {
+//     try {
+//       const user = onAuthStateChanged(auth, (user) => {
+//         if (user) {
+//           dispatch(authSignInUser(user));
+//         } else {
+//           dispatch(authSignOutUser());
+//         }
+//       });
+//       return user;
+//     } catch (error) {
+//       rejectWithValue(error.message);
+//     }
+//   }
+// );
+
 export const authStateChange = createAsyncThunk(
   "auth/authStateChange",
-  async (_, { rejectWithValue, dispatch }) => {
-    try {
-      const user = await onAuthStateChanged(auth, (user) => {
-        return user;
+  (_, { dispatch }) => {
+    return new Promise((resolve, reject) => {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          dispatch(authSignInUser(user));
+          resolve(user);
+        } else {
+          dispatch(authSignOutUser());
+          reject("No user signed in");
+        }
       });
-      return user;
-    } catch (error) {
-      rejectWithValue(error.message);
-    }
+    });
   }
 );
