@@ -29,7 +29,7 @@ export const authSignInUser = createAsyncThunk(
   "auth/signInUser",
   async ({ email, password }, { getState, rejectWithValue }) => {
     try {
-      const user = await signInWithEmailAndPassword(auth, email, password);
+      const { user } = await signInWithEmailAndPassword(auth, email, password);
 
       return user;
     } catch (error) {
@@ -49,37 +49,17 @@ export const authSignOutUser = createAsyncThunk(
   }
 );
 
-// export const authStateChange = createAsyncThunk(
-//   "auth/authStateChange",
-//   async (_, { rejectWithValue, dispatch }) => {
-//     try {
-//       const user = onAuthStateChanged(auth, (user) => {
-//         if (user) {
-//           dispatch(authSignInUser(user));
-//         } else {
-//           dispatch(authSignOutUser());
-//         }
-//       });
-//       return user;
-//     } catch (error) {
-//       rejectWithValue(error.message);
-//     }
-//   }
-// );
-
 export const authStateChange = createAsyncThunk(
   "auth/authStateChange",
-  (_, { dispatch }) => {
-    return new Promise((resolve, reject) => {
+  async (_, { rejectWithValue, dispatch }) => {
+    try {
       onAuthStateChanged(auth, (user) => {
         if (user) {
           dispatch(authSignInUser(user));
-          resolve(user);
         } else {
           dispatch(authSignOutUser());
-          reject("No user signed in");
         }
       });
-    });
+    } catch (error) {}
   }
 );

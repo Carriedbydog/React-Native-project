@@ -8,9 +8,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { LogOut } from "lucide-react-native";
 import { CreatePostsScreen } from "./screens/CreatePostsScreen";
 import { useDispatch, useSelector } from "react-redux";
-import { onAuthStateChanged } from "firebase/auth";
-import { setUser } from "./redux/slice";
-import { auth } from "./config/firebase";
 import { selectUser } from "./redux/selectors";
 import { useEffect } from "react";
 import { authSignOutUser, authStateChange } from "./redux/operations";
@@ -19,6 +16,7 @@ const MainStack = createStackNavigator();
 
 export default function Navigate() {
   const user = useSelector(selectUser);
+  console.log(user, "user");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -29,7 +27,7 @@ export default function Navigate() {
     dispatch(authSignOutUser());
   };
 
-  if (user) {
+  if (user && user.uid) {
     return (
       <NavigationContainer>
         <MainStack.Navigator initialRouteName="Home">
